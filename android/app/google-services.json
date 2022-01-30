@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "759989339005",
+    "project_id": "cats-care-658ec",
+    "storage_bucket": "cats-care-658ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759989339005:android:ba7badb63fed828d7d4214",
+        "android_client_info": {
+          "package_name": "my.id.sendiagustian.catscare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759989339005-nebfnm7lg0i4rn1vo26l4ullfec9ljve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbca1IN0z903seFGJmVE9vc_9ThXZ6xkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759989339005-nebfnm7lg0i4rn1vo26l4ullfec9ljve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
