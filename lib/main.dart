@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Cats care',
       theme: ThemeData(
         primarySwatch: AppStyle.styleColor.primarySwatchColor,
+        fontFamily: 'FredokaOne',
       ),
       home: const SplashScreen(),
       routes: <String, WidgetBuilder>{
