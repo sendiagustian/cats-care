@@ -1,4 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:catscare/screens/home/home.dart';
+import 'package:catscare/screens/splash.dart';
+import 'package:catscare/utils/app_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -11,31 +13,18 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Cats care',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: AppStyle.styleColor.primarySwatchColor,
       ),
-      home: Scaffold(
-        body: Center(
-          child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance
-                .collection('test')
-                .doc('QpTeTIDE9rYVLEUlM2iB')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data!.get('test'));
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          ),
-        ),
-      ),
+      home: const SplashScreen(),
+      routes: <String, WidgetBuilder>{
+        'home': (BuildContext context) => const HomeScreen(),
+      },
     );
   }
 }
