@@ -1,3 +1,4 @@
+import 'package:catscare/utils/app_style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: AppStyle.styleColor.primarySwatchColor,
+        fontFamily: 'FredokaOne',
       ),
       home: Scaffold(
         body: Center(
