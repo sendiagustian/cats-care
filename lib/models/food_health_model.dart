@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FoodHealtModel {
-  final DocumentReference reference;
+  final DocumentReference? reference;
   final String title;
   final String cover;
   final String content;
 
   FoodHealtModel({
-    required this.reference,
+    this.reference,
     required this.title,
     required this.cover,
     required this.content,
