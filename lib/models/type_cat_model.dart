@@ -7,7 +7,7 @@ class TypeCatModel {
   final String content;
 
   TypeCatModel({
-     this.reference,
+    this.reference,
     required this.title,
     required this.cover,
     required this.content,
