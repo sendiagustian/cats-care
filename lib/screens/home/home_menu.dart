@@ -1,3 +1,5 @@
+import 'package:catscare/screens/food_health/backend_manage/backend_manage.dart';
+import 'package:catscare/screens/type_cat/backend_manage/backend_manage.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +16,22 @@ class HomeMenuScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8.0),
             color: AppStyle.styleColor.accentColor,
-            child: const ListTile(
-              leading: Icon(
+            child: ListTile(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const BackendManageFoodHealthScreen();
+                    },
+                  ),
+                );
+              },
+              leading: const Icon(
                 Icons.settings,
                 color: Colors.black,
                 size: 50,
               ),
-              title: Text(
+              title: const Text(
                 'MANAGE FOOD & HEALTH',
                 style: TextStyle(
                   fontSize: 20,
@@ -37,13 +48,22 @@ class HomeMenuScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8.0),
             color: AppStyle.styleColor.accentColor,
-            child: const ListTile(
-              leading: Icon(
+            child: ListTile(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const BackendManageTypeCatScreen();
+                    },
+                  ),
+                );
+              },
+              leading: const Icon(
                 Icons.settings,
                 color: Colors.black,
                 size: 50,
               ),
-              title: Text(
+              title: const Text(
                 'MANAGE TYPE OF CATS',
                 style: TextStyle(
                   fontSize: 20,

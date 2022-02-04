@@ -8,49 +8,50 @@ class FoodHealthDatabase {
   String collectionPath = 'foodHealth';
 
   // Query Create Document
-  Future<String?> create(FoodHealtModel foodHealtModel) async {
+  Future<String?> create(FoodHealthModel foodHealthModel) async {
     await firestore
         .collection(collectionPath)
         .doc()
-        .set(foodHealtModel.toData());
+        .set(foodHealthModel.toData());
   }
 
   // Query Stream
-  Stream<QuerySnapshot<FoodHealtModel>> streamTypeCats() {
-    return firestore.collection(collectionPath).withConverter<FoodHealtModel>(
+  Stream<QuerySnapshot<FoodHealthModel>> streamFoodHealths() {
+    return firestore.collection(collectionPath).withConverter<FoodHealthModel>(
       fromFirestore: (DocumentSnapshot<Map<String, dynamic>> snapshot, _) {
-        return FoodHealtModel.fromData(snapshot);
+        return FoodHealthModel.fromData(snapshot);
       },
-      toFirestore: (FoodHealtModel model, _) {
+      toFirestore: (FoodHealthModel model, _) {
         return model.toData();
       },
     ).snapshots();
   }
 
   // Query Get Collection
-  Future<QuerySnapshot<FoodHealtModel>> readTpeCats() async {
+  Future<QuerySnapshot<FoodHealthModel>> readFoodHealths() async {
     return await firestore
         .collection(collectionPath)
-        .withConverter<FoodHealtModel>(
+        .withConverter<FoodHealthModel>(
       fromFirestore: (DocumentSnapshot<Map<String, dynamic>> snapshot, _) {
-        return FoodHealtModel.fromData(snapshot);
+        return FoodHealthModel.fromData(snapshot);
       },
-      toFirestore: (FoodHealtModel model, _) {
+      toFirestore: (FoodHealthModel model, _) {
         return model.toData();
       },
     ).get();
   }
 
   // Query Get 1 Dokumen
-  Future<DocumentSnapshot<FoodHealtModel>?> readTypeCat(String? docId) async {
+  Future<DocumentSnapshot<FoodHealthModel>?> readFoodHealth(
+      String? docId) async {
     return await firestore
         .collection(collectionPath)
         .doc(docId)
-        .withConverter<FoodHealtModel>(
+        .withConverter<FoodHealthModel>(
       fromFirestore: (DocumentSnapshot<Map<String, dynamic>> snapshot, _) {
-        return FoodHealtModel.fromData(snapshot);
+        return FoodHealthModel.fromData(snapshot);
       },
-      toFirestore: (FoodHealtModel model, _) {
+      toFirestore: (FoodHealthModel model, _) {
         return model.toData();
       },
     ).get();

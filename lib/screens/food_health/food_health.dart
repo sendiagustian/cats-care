@@ -1,15 +1,28 @@
 import 'package:catscare/databases/food_health_database.dart';
 import 'package:catscare/models/food_health_model.dart';
+import 'package:catscare/screens/food_health/detail_food_health.dart';
 import 'package:catscare/utils/app_style.dart';
+import 'package:catscare/utils/html_extension.dart';
 import 'package:catscare/widgets/app_widget.dart';
 import 'package:catscare/widgets/menu_more.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class FoodHealthScreen extends StatelessWidget {
+class FoodHealthScreen extends StatefulWidget {
   const FoodHealthScreen({Key? key}) : super(key: key);
 
-  Widget _buildItemList(BuildContext context, FoodHealtModel foodHealtModel) {
+  @override
+  State<FoodHealthScreen> createState() => _FoodHealthScreenState();
+}
+
+class _FoodHealthScreenState extends State<FoodHealthScreen> {
+  final TextEditingController _controller = TextEditingController();
+  List<FoodHealthModel> _list = [];
+  List<FoodHealthModel> searchResult = [];
+  bool _isSearching = false;
+  String searchText = "";
+
+  Widget _buildItemList(BuildContext context, FoodHealthModel foodHealthModel) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 60.0),
       child: Container(
@@ -35,7 +48,7 @@ class FoodHealthScreen extends StatelessWidget {
                     "assets/images/food.png",
                   ),
                   image: NetworkImage(
-                    foodHealtModel.cover.toString(),
+                    foodHealthModel.cover.toString(),
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -48,7 +61,7 @@ class FoodHealthScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    foodHealtModel.title,
+                    foodHealthModel.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -56,7 +69,7 @@ class FoodHealthScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    foodHealtModel.content,
+                    Html2StringExtension.renderToSring(foodHealthModel.content),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -72,7 +85,15 @@ class FoodHealthScreen extends StatelessWidget {
                         backgroundColor: Colors.black,
                         primary: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return DetailFoodHealthScreen(foodHealthModel);
+                            },
+                          ),
+                        );
+                      },
                       child: const Text(
                         'MORE INFO',
                         style: TextStyle(
@@ -88,66 +109,26 @@ class FoodHealthScreen extends StatelessWidget {
         ),
       ),
     );
-    // return Padding(
-    //   padding: const EdgeInsets.only(bottom: 60),
-    //   child: InkWell(
-    //     borderRadius: BorderRadius.circular(10),
-    //     onTap: () {},
-    //     child: Container(
-    //       padding: const EdgeInsets.only(left: 5),
-    //       child: Row(
-    //         children: [
-    //           Expanded(
-    //             child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //               children: [
-    //                 Text(
-    //                   FoodHealtModel.title,
-    //                   maxLines: 3,
-    //                   overflow: TextOverflow.ellipsis,
-    //                   style: TextStyle(
-    //                     fontSize: 15,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Colors.grey[700],
-    //                   ),
-    //                 ),
-    //                 const SizedBox(height: 5),
-    //                 Text(
-    //                   'DateTimeUtils.dateFormat(newsModel.createdAt)',
-    //                   maxLines: 1,
-    //                   overflow: TextOverflow.ellipsis,
-    //                   style: TextStyle(
-    //                     fontFamily: 'Lato',
-    //                     fontSize: 10,
-    //                     color: Colors.grey[700],
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           const SizedBox(width: 6),
-    //           SizedBox(
-    //             height: 90,
-    //             width: 88,
-    //             child: ClipRRect(
-    //               borderRadius: BorderRadius.circular(10),
-    //               child: FadeInImage(
-    //                 placeholder: const AssetImage(
-    //                   "assets/images/cat.png",
-    //                 ),
-    //                 image: NetworkImage(
-    //                   FoodHealtModel.cover.toString(),
-    //                 ),
-    //                 fit: BoxFit.cover,
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _isSearching = false;
+          searchText = "";
+        });
+      } else {
+        setState(() {
+          _isSearching = true;
+          searchText = _controller.text;
+        });
+      }
+    });
+    _isSearching = false;
+    values();
   }
 
   @override
@@ -165,30 +146,120 @@ class FoodHealthScreen extends StatelessWidget {
           );
         },
       ),
-      body: StreamBuilder<QuerySnapshot<FoodHealtModel>>(
-        stream: FoodHealthDatabase().streamTypeCats(),
+      body: StreamBuilder<QuerySnapshot<FoodHealthModel>>(
+        stream: FoodHealthDatabase().streamFoodHealths(),
         builder: (
           context,
-          AsyncSnapshot<QuerySnapshot<FoodHealtModel>> snapshot,
+          AsyncSnapshot<QuerySnapshot<FoodHealthModel>> snapshot,
         ) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(
-              vertical: 60.0,
-              horizontal: 38.0,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 16.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 8,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 3,
+                      top: 3,
+                      bottom: 3,
+                    ),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                    child: Center(
+                      child: TextFormField(
+                        controller: _controller,
+                        onTap: values,
+                        onChanged: searchOperation,
+                        onEditingComplete: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(12, 10, 12, 8),
+                          suffixIcon: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                          ),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: "Hint here",
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24.0),
+                const Text(
+                  'FOOD AND HEALTH',
+                  style: TextStyle(
+                    fontSize: 32,
+                  ),
+                ),
+                const SizedBox(height: 24.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 38.0,
+                  ),
+                  child: Column(
+                    children: List.generate(
+                        _isSearching
+                            ? searchResult.length
+                            : snapshot.data!.docs.length, (index) {
+                      FoodHealthModel foodHealthModel = _isSearching
+                          ? searchResult[index]
+                          : snapshot.data!.docs[index].data();
+                      return _buildItemList(
+                        context,
+                        foodHealthModel,
+                      );
+                    }),
+                  ),
+                )
+              ],
             ),
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (_, index) {
-              FoodHealtModel foodHealtModel = snapshot.data!.docs[index].data();
-              return _buildItemList(context, foodHealtModel);
-            },
           );
         },
       ),
     );
+  }
+
+  void values() async {
+    _list = [];
+    await FoodHealthDatabase().readFoodHealths().then((docs) {
+      if (docs.docs.isNotEmpty) {
+        for (var data in docs.docs) {
+          _list.add(FoodHealthModel.fromData(data));
+        }
+      }
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching) {
+      for (int i = 0; i < _list.length; i++) {
+        FoodHealthModel data = _list[i];
+        if (data.title.toLowerCase().contains(searchText.toLowerCase())) {
+          searchResult.add(data);
+        }
+      }
+    }
   }
 }
