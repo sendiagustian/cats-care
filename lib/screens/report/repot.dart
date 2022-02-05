@@ -1,6 +1,6 @@
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/widgets/app_widget.dart';
-import 'package:catscare/widgets/menu_more.dart';
 import 'package:flutter/material.dart';
 
 class RepotScreen extends StatelessWidget {
@@ -11,15 +11,7 @@ class RepotScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: false,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const MenuMoreScreen();
-              },
-            ),
-          );
-        },
+        onPressed: () => AppFunction.appBarActionMoreMenu(context),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 38.0),

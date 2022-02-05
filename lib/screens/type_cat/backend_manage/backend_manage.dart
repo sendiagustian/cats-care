@@ -1,13 +1,12 @@
 import 'package:catscare/databases/type_cat_database.dart';
 import 'package:catscare/models/type_cat_model.dart';
+import 'package:catscare/screens/type_cat/backend_manage/type_cat_form.dart';
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/utils/html_extension.dart';
 import 'package:catscare/widgets/app_widget.dart';
-import 'package:catscare/widgets/menu_more.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../detail_type_cat.dart';
 
 class BackendManageTypeCatScreen extends StatefulWidget {
   const BackendManageTypeCatScreen({Key? key}) : super(key: key);
@@ -86,10 +85,17 @@ class _BackendManageTypeCatScreenState
                           ElevatedButton(
                             style: TextButton.styleFrom(
                               elevation: 0,
-                              // backgroundColor: Colors.black,
                               primary: Colors.black,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const TypeCatFormScreen();
+                                  },
+                                ),
+                              );
+                            },
                             child: const Text(
                               'EDIT',
                               style: TextStyle(
@@ -130,15 +136,10 @@ class _BackendManageTypeCatScreenState
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: false,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const MenuMoreScreen();
-              },
-            ),
-          );
-        },
+        onPressed: () => AppFunction.appBarActionMoreMenu(
+          context,
+          countOnPop: 3,
+        ),
       ),
       body: StreamBuilder<QuerySnapshot<TypeCatModel>>(
         stream: TypeCatDatabase().streamTypeCats(),
@@ -178,7 +179,13 @@ class _BackendManageTypeCatScreenState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const TypeCatFormScreen();
+              },
+            ),
+          );
         },
         backgroundColor: AppStyle.styleColor.primaryColor,
         child: const Icon(Icons.add),

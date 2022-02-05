@@ -1,7 +1,6 @@
 import 'package:catscare/screens/food_health/food_health.dart';
-import 'package:catscare/screens/home/home_menu.dart';
-import 'package:catscare/screens/report/repot.dart';
 import 'package:catscare/screens/type_cat/type_cat.dart';
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ class HomeScreen extends StatelessWidget {
     BuildContext context, {
     required String title,
     required String pathImg,
+    required Function() onTap,
   }) {
     return Column(
       children: [
@@ -22,15 +22,7 @@ class HomeScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: InkWell(
             borderRadius: BorderRadius.circular(20),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const FoodHealthScreen();
-                  },
-                ),
-              );
-            },
+            onTap: onTap,
             child: Container(
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
@@ -65,15 +57,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: true,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const HomeMenuScreen();
-              },
-            ),
-          );
-        },
+        onPressed: () => AppFunction.appBarActionHomeMenu(context),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(38, 0, 38, 60),
@@ -82,13 +66,35 @@ class HomeScreen extends StatelessWidget {
             context,
             title: 'TIPE OF CATS',
             pathImg: 'assets/images/cat.png',
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const TypeCatScreen();
+                  },
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             context,
             title: 'FOOD & HEALTH',
             pathImg: 'assets/images/food.png',
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const FoodHealthScreen();
+                  },
+                ),
+              );
+            },
           )
         ],
+      ),
+      bottomNavigationBar: const SizedBox(
+        height: 60,
+        child: Center(child: Text('2022 © Kelompok 3')),
       ),
     );
   }

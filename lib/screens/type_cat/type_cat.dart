@@ -1,10 +1,10 @@
 import 'package:catscare/databases/type_cat_database.dart';
 import 'package:catscare/models/type_cat_model.dart';
 import 'package:catscare/screens/type_cat/detail_type_cat.dart';
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/utils/html_extension.dart';
 import 'package:catscare/widgets/app_widget.dart';
-import 'package:catscare/widgets/menu_more.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -136,15 +136,10 @@ class _TypeCatScreenState extends State<TypeCatScreen> {
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: false,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const MenuMoreScreen();
-              },
-            ),
-          );
-        },
+        onPressed: () => AppFunction.appBarActionMoreMenu(
+          context,
+          countOnPop: 2,
+        ),
       ),
       body: StreamBuilder<QuerySnapshot<TypeCatModel>>(
         stream: TypeCatDatabase().streamTypeCats(),

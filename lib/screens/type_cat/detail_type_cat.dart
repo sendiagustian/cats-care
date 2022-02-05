@@ -1,6 +1,6 @@
 import 'package:catscare/models/type_cat_model.dart';
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/widgets/app_widget.dart';
-import 'package:catscare/widgets/menu_more.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -13,17 +13,10 @@ class DetailTypeCatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: false,
-        onPressed: () {
-          Navigator.of(context)
-            ..pop()
-            ..push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return const MenuMoreScreen();
-                },
-              ),
-            );
-        },
+        onPressed: () => AppFunction.appBarActionMoreMenu(
+          context,
+          countOnPop: 3,
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

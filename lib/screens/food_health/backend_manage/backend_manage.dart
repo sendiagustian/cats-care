@@ -1,11 +1,9 @@
 import 'package:catscare/databases/food_health_database.dart';
-import 'package:catscare/databases/type_cat_database.dart';
 import 'package:catscare/models/food_health_model.dart';
-import 'package:catscare/models/type_cat_model.dart';
+import 'package:catscare/utils/app_function.dart';
 import 'package:catscare/utils/app_style.dart';
 import 'package:catscare/utils/html_extension.dart';
 import 'package:catscare/widgets/app_widget.dart';
-import 'package:catscare/widgets/menu_more.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -130,15 +128,10 @@ class _BackendManageFoodHealthScreenState
     return Scaffold(
       appBar: AppWidget.appBar(
         isHomeMenu: false,
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const MenuMoreScreen();
-              },
-            ),
-          );
-        },
+        onPressed: () => AppFunction.appBarActionMoreMenu(
+          context,
+          countOnPop: 3,
+        ),
       ),
       body: StreamBuilder<QuerySnapshot<FoodHealthModel>>(
         stream: FoodHealthDatabase().streamFoodHealths(),
