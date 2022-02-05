@@ -82,12 +82,13 @@ class StorageUtil {
   }) async {
     Reference storageReference = FirebaseStorage.instance.ref(url);
     storageReference.delete();
-    List<DocumentSnapshot<Map<String, dynamic>>> drives = (await FirebaseFirestore.instance
-            .collection('drives')
-            .where('url', isEqualTo: url)
-            .get())
-        .docs;
-    if (drives.length > 0) {
+    List<DocumentSnapshot<Map<String, dynamic>>> drives =
+        (await FirebaseFirestore.instance
+                .collection('drives')
+                .where('url', isEqualTo: url)
+                .get())
+            .docs;
+    if (drives.isNotEmpty) {
       for (DocumentSnapshot<Map<String, dynamic>> drive in drives) {
         await drive.reference.delete();
       }
